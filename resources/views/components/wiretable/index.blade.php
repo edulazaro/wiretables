@@ -1,4 +1,4 @@
-@props(['stack' => null, 'expandable' => false, 'rows' => null])
+@props(['stack' => null, 'expandable' => false, 'compact' => false, 'rows' => null, 'flush' => false])
 
 {{-- A table that reads the same everywhere: rows of the record first and the rest fitted to
      their content (`x-wiretable.th` / `x-wiretable.td`). Columns hide as the screen narrows and
@@ -7,7 +7,9 @@
 
      `stack="md"`: below that breakpoint each row is a card and each cell shows its `label`
      instead of hiding; with `expandable`, the cells with `hide` fold behind a button.
-     `rows="separated"`: each row a card of its own, apart from the next.
+     `compact` keeps the cells without `hide` and the actions on one line, the rest below.
+     `rows="separated"`: each row a card of its own, apart from the next. `flush`: no frame,
+     for a table inside a card of its own.
 
      <x-wiretable>
          <x-slot:head>
@@ -20,7 +22,9 @@
 <div {{ $attributes->class([
     'wtb-table',
     'wtb-stack-'.$stack => in_array($stack, ['sm', 'md', 'lg', 'xl'], true),
+    'wtb-compact' => $compact,
     'wtb-separated' => $rows === 'separated',
+    'wtb-flush' => $flush,
 ]) }}>
     <table class="wtb-grid">
         <thead class="wtb-head">

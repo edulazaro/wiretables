@@ -469,6 +469,31 @@
 }
 
 /* =========================================================
+   flush: no frame, the first and last columns against the edges;
+   for a table that already sits in a card
+   ========================================================= */
+.wtb-flush {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.wtb-flush .wtb-th:first-child,
+.wtb-flush .wtb-td:first-child {
+    padding-left: 0;
+}
+
+.wtb-flush .wtb-th:last-child,
+.wtb-flush .wtb-td:last-child {
+    padding-right: 0;
+}
+
+.wtb-flush .wtb-footer {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* =========================================================
    rows="separated": each row a card of its own
    Separate borders, so each cell draws its part of the card.
    ========================================================= */
@@ -833,5 +858,117 @@
         border: 0;
         border-radius: 0;
         background: transparent;
+    }
+}
+
+@media (max-width: 39.99rem) {
+    .wtb-stack-sm.wtb-compact .wtb-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .wtb-stack-sm.wtb-compact .wtb-row > .wtb-td {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .wtb-stack-sm.wtb-compact .wtb-row > .wtb-td:first-child {
+        padding-right: 0;
+    }
+
+    .wtb-stack-sm.wtb-compact .wtb-row > .wtb-td.wtb-actions {
+        position: static;
+        flex: 0 0 auto;
+    }
+
+    .wtb-stack-sm.wtb-compact .wtb-row > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        order: 10;
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 47.99rem) {
+    .wtb-stack-md.wtb-compact .wtb-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .wtb-stack-md.wtb-compact .wtb-row > .wtb-td {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .wtb-stack-md.wtb-compact .wtb-row > .wtb-td:first-child {
+        padding-right: 0;
+    }
+
+    .wtb-stack-md.wtb-compact .wtb-row > .wtb-td.wtb-actions {
+        position: static;
+        flex: 0 0 auto;
+    }
+
+    .wtb-stack-md.wtb-compact .wtb-row > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        order: 10;
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 63.99rem) {
+    .wtb-stack-lg.wtb-compact .wtb-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .wtb-stack-lg.wtb-compact .wtb-row > .wtb-td {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .wtb-stack-lg.wtb-compact .wtb-row > .wtb-td:first-child {
+        padding-right: 0;
+    }
+
+    .wtb-stack-lg.wtb-compact .wtb-row > .wtb-td.wtb-actions {
+        position: static;
+        flex: 0 0 auto;
+    }
+
+    .wtb-stack-lg.wtb-compact .wtb-row > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        order: 10;
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 79.99rem) {
+    .wtb-stack-xl.wtb-compact .wtb-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .wtb-stack-xl.wtb-compact .wtb-row > .wtb-td {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .wtb-stack-xl.wtb-compact .wtb-row > .wtb-td:first-child {
+        padding-right: 0;
+    }
+
+    .wtb-stack-xl.wtb-compact .wtb-row > .wtb-td.wtb-actions {
+        position: static;
+        flex: 0 0 auto;
+    }
+
+    .wtb-stack-xl.wtb-compact .wtb-row > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        order: 10;
+        flex-basis: 100%;
     }
 }

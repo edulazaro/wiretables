@@ -162,4 +162,11 @@ class TableTest extends TestCase
         $this->assertStringNotContainsString('x-data', $plain);
         $this->assertStringNotContainsString('wtb-expand', $plain);
     }
+
+    public function test_a_flush_or_compact_table_says_so(): void
+    {
+        $html = Blade::render("<x-wiretable flush stack=\"md\" compact>\n<x-slot:head><x-wiretable.th>A</x-wiretable.th></x-slot:head>\n</x-wiretable>");
+
+        $this->assertStringContainsString('class="wtb-table wtb-stack-md wtb-compact wtb-flush"', $html);
+    }
 }

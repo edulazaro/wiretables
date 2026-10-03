@@ -104,6 +104,12 @@ Two ways, chosen per table.
 
 With `expandable`, the cells that have `hide` fold away in the card and a button in the actions cell unfolds them, one row at a time. On a desktop nothing changes.
 
+Add `compact` for a denser card: the cells without `hide` and the actions share one line, and the cells with `hide` go below it, folded with `expandable`. Leave out their `label` for plain lines.
+
+## Inside a card
+
+`flush` drops the frame (ground, line and radius) and puts the first and last columns against the edges, for a table that already sits in a card of its own, such as a dashboard panel.
+
 ## Separated rows
 
 `rows="separated"` draws each row as a card of its own, with a little room between them, instead of one frame with lines. `--wtb-row-gap` sets the room. It combines with `stack`.
@@ -207,13 +213,19 @@ Each read asks for everything up to the current page from the start, rather than
 
 A `menu-item` is a link with `href` and a button otherwise (`wire:click`, `x-on:click`); `leading` holds an icon (18 px) or a dot before the text, and `danger` paints what destroys or cannot be undone. `menu-separator` splits the groups. The menu is moved to `<body>` and anchored to its button, so a table that scrolls, a card or a modal never clips it; choosing an item, a click outside or Escape closes it. Actions per row live here rather than as loose buttons, which do not fit on a phone.
 
+## Lists without column headers
+
+When each record reads as a card rather than a row of columns (a title with badges, a muted line, a status on the right), or for a grid of cards, use [wirelist](https://github.com/edulazaro/wirelist): built on this package, with the same look, menu, load more and themes.
+
 ## Options
 
 | Component | Attribute | |
 |---|---|---|
 | `x-wiretable` | `stack` | `sm`, `md`, `lg` or `xl`: below it, rows become cards |
 | | `expandable` | With `stack`, the cells with `hide` fold behind a button |
+| | `compact` | With `stack`, the main cells and the actions on one line |
 | | `rows` | `separated`: each row a card of its own |
+| | `flush` | No frame, for a table inside a card |
 | | slot `footer` | Under the rows, inside the frame |
 | `x-wiretable.th` | `hide` | `sm`, `md`, `lg` or `xl`: the breakpoint from which the column shows |
 | | `shrink` | As wide as its content |
