@@ -1,0 +1,28 @@
+/* wiretables theme: glass (frosted).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="glass"] {
+    --wire-bg: rgba(255, 255, 255, 0.55);
+    --wire-bg-elevated: rgba(255, 255, 255, 0.55);
+    --wire-text: #0f172a;
+    --wire-text-muted: rgba(15, 23, 42, 0.7);
+    --wire-border: rgba(255, 255, 255, 0.4);
+    --wire-radius: 14px;
+    --wire-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
+[data-wire-theme="glass"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="glass"] {
+    --wire-bg: rgba(30, 30, 35, 0.55);
+    --wire-bg-elevated: rgba(30, 30, 35, 0.55);
+    --wire-text: #f1f5f9;
+    --wire-text-muted: rgba(241, 245, 249, 0.7);
+    --wire-border: rgba(255, 255, 255, 0.1);
+}
+
+[data-wire-theme="glass"] .wtb-table,
+.wtb-menu-panel:is([data-wire-theme="glass"] *, [data-wire-theme="glass"]) {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+[data-wire-theme="glass"] {
+    --wtb-shadow: 0 0 0 1px var(--wtb-line), var(--wire-shadow);
+}

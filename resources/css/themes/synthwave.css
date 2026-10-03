@@ -1,0 +1,32 @@
+/* wiretables theme: synthwave (retro purple and magenta).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="synthwave"] {
+    --wire-accent: #ff00ff;
+    --wire-radius: 0;
+    --wire-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 0 14px color-mix(in srgb, var(--wire-accent) 40%, transparent),
+        0 4px 20px color-mix(in srgb, var(--wire-accent) 25%, transparent);
+}
+
+[data-wire-theme="synthwave"] {
+    --wtb-font: ui-monospace, "JetBrains Mono", "Courier New", monospace;
+    --wtb-bg: #1a0033;
+    --wtb-text: #ffffff;
+    --wtb-muted: rgba(255, 255, 255, 0.7);
+    --wtb-faint: rgba(255, 255, 255, 0.45);
+    --wtb-line: color-mix(in srgb, var(--wire-accent) 45%, transparent);
+    --wtb-row-hover: rgba(255, 255, 255, 0.06);
+    --wtb-head-text: var(--wire-accent);
+    --wtb-head-strong: #ffffff;
+    --wtb-shadow: 0 0 0 1px var(--wire-accent), var(--wire-shadow);
+    --wtb-menu-bg: #1a0033;
+    --wtb-menu-radius: 0;
+}
+[data-wire-theme="synthwave"] .wtb-table {
+    background: linear-gradient(135deg, #1a0033 0%, #2d0066 100%);
+    letter-spacing: 0.04em;
+}
+[data-wire-theme="synthwave"] .wtb-head {
+    text-shadow: 0 0 8px var(--wire-accent);
+}

@@ -1,0 +1,27 @@
+/* wiretables theme: neon (dark, glowing accent, monospace).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="neon"] {
+    --wire-bg: #0a0a12;
+    --wire-bg-elevated: #0a0a12;
+    --wire-accent: #22d3ee;
+    --wire-text: var(--wire-accent);
+    --wire-text-muted: color-mix(in srgb, var(--wire-accent) 55%, #ffffff);
+    --wire-border: var(--wire-accent);
+    --wire-border-strong: var(--wire-accent);
+    --wire-radius: 4px;
+    --wire-shadow:
+        0 0 20px color-mix(in srgb, var(--wire-accent) 50%, transparent),
+        inset 0 0 20px color-mix(in srgb, var(--wire-accent) 8%, transparent);
+}
+
+[data-wire-theme="neon"] {
+    --wtb-font: ui-monospace, "JetBrains Mono", "Fira Code", "Courier New", monospace;
+    --wtb-line: color-mix(in srgb, var(--wire-accent) 35%, transparent);
+    --wtb-row-hover: color-mix(in srgb, var(--wire-accent) 8%, transparent);
+    --wtb-shadow: 0 0 0 1px var(--wire-accent), var(--wire-shadow);
+    --wtb-menu-radius: 4px;
+}
+[data-wire-theme="neon"] .wtb-head {
+    letter-spacing: 0.3px;
+    text-shadow: 0 0 6px color-mix(in srgb, var(--wire-accent) 50%, transparent);
+}

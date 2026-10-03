@@ -1,0 +1,27 @@
+/* wiretables theme: chatgpt (clean neutral, rounder).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="chatgpt"] {
+    --wire-bg: #FFFFFF;
+    --wire-bg-elevated: #FFFFFF;
+    --wire-text: #0D0D0D;
+    --wire-text-muted: #5D5D5D;
+    --wire-border: #E5E5E5;
+    --wire-accent: #10a37f;
+    --wire-radius: 12px;
+    --wire-shadow:
+        0 6px 24px rgba(0, 0, 0, 0.05),
+        0 1px 2px rgba(0, 0, 0, 0.04);
+    --wire-font: "Söhne", ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Inter", sans-serif;
+}
+[data-wire-theme="chatgpt"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="chatgpt"] {
+    --wire-bg: #2F2F2F;
+    --wire-bg-elevated: #2F2F2F;
+    --wire-text: #ECECEC;
+    --wire-text-muted: #B4B4B4;
+    --wire-border: #4D4D4F;
+}
+
+[data-wire-theme="chatgpt"] {
+    --wtb-menu-radius: 12px;
+}

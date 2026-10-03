@@ -1,0 +1,13 @@
+/* wiretables theme: soft (tinted with the accent).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="soft"] {
+    --wire-radius: 12px;
+}
+
+[data-wire-theme="soft"] {
+    --wtb-line: color-mix(in srgb, var(--wire-accent) 18%, transparent);
+    --wtb-row-hover: color-mix(in srgb, var(--wire-accent) 6%, transparent);
+    --wtb-head-bg: color-mix(in srgb, var(--wire-accent) 6%, transparent);
+    --wtb-menu-bg: color-mix(in srgb, var(--wire-accent) 10%, var(--wire-bg));
+    --wtb-menu-shadow: 0 4px 12px color-mix(in srgb, var(--wire-accent) 12%, transparent);
+}

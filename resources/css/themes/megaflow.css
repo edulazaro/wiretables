@@ -1,0 +1,35 @@
+/* wiretables theme: megaflow (Flowbite-style clean white card).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="megaflow"] {
+    --wire-bg: #ffffff;
+    --wire-bg-elevated: #ffffff;
+    --wire-text: #111827;
+    --wire-text-muted: #6b7280;
+    --wire-border: rgba(0, 0, 0, 0.05);
+    --wire-accent: #3b82f6;
+    --wire-radius: 8px;
+    --wire-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.06);
+    --wire-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Inter", sans-serif;
+}
+[data-wire-theme="megaflow"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="megaflow"] {
+    --wire-bg: #1f2937;
+    --wire-bg-elevated: #1f2937;
+    --wire-text: #f9fafb;
+    --wire-text-muted: #9ca3af;
+    --wire-border: rgba(255, 255, 255, 0.06);
+}
+
+[data-wire-theme="megaflow"] {
+    --wtb-head-bg: #f9fafb;
+    --wtb-head-text: #374151;
+    --wtb-line: #e5e7eb;
+}
+[data-wire-theme="megaflow"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="megaflow"] {
+    --wtb-head-bg: #374151;
+    --wtb-head-text: #d1d5db;
+    --wtb-line: #374151;
+}

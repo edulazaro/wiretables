@@ -1,0 +1,17 @@
+/* wiretables theme: gradient (the header on the accent's gradient, white text).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="gradient"] {
+    --wire-accent: #8b5cf6;
+    --wire-radius: 12px;
+}
+
+[data-wire-theme="gradient"] {
+    --wtb-head-text: rgba(255, 255, 255, 0.85);
+    --wtb-head-strong: #ffffff;
+    --wtb-faint: rgba(255, 255, 255, 0.7);
+    --wtb-head-bg: linear-gradient(135deg, var(--wire-accent), color-mix(in srgb, var(--wire-accent) 65%, #000000));
+    --wtb-row-hover: color-mix(in srgb, var(--wire-accent) 6%, transparent);
+}
+[data-wire-theme="gradient"] .wtb-head {
+    border-bottom-color: transparent;
+}

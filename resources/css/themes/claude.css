@@ -1,0 +1,27 @@
+/* wiretables theme: claude (warm minimal).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="claude"] {
+    --wire-bg: #FAF9F5;
+    --wire-bg-elevated: #FAF9F5;
+    --wire-text: #1A1A1A;
+    --wire-text-muted: #6B6560;
+    --wire-border: rgba(26, 26, 26, 0.08);
+    --wire-accent: #C96442;
+    --wire-radius: 10px;
+    --wire-shadow:
+        0 8px 24px rgba(26, 26, 26, 0.06),
+        0 2px 6px rgba(26, 26, 26, 0.04);
+}
+[data-wire-theme="claude"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="claude"] {
+    --wire-bg: #262321;
+    --wire-bg-elevated: #262321;
+    --wire-text: #F5F4EE;
+    --wire-text-muted: #B8B3AC;
+    --wire-border: rgba(255, 255, 255, 0.08);
+}
+
+[data-wire-theme="claude"] .wtb-table {
+    border-top: 2px solid var(--wire-accent);
+    letter-spacing: -0.005em;
+}

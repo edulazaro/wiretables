@@ -1,0 +1,28 @@
+/* wiretables theme: studio (gray-900, sharp corners).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="studio"] {
+    --wire-bg: #ffffff;
+    --wire-bg-elevated: #ffffff;
+    --wire-text: #111827;
+    --wire-text-muted: #6b7280;
+    --wire-border: #e5e7eb;
+    --wire-accent: #111827;
+    --wire-radius: 2px;
+    --wire-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(17, 24, 39, 0.1);
+    --wire-font: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+[data-wire-theme="studio"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="studio"] {
+    --wire-bg: #111827;
+    --wire-bg-elevated: #111827;
+    --wire-text: #f3f4f6;
+    --wire-text-muted: #9ca3af;
+    --wire-border: #1f2937;
+}
+
+[data-wire-theme="studio"] {
+    --wtb-menu-radius: 2px;
+    --wtb-shadow: 0 0 0 1px var(--wtb-line), 0 1px 2px rgba(0, 0, 0, 0.05);
+}

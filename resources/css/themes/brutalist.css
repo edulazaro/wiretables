@@ -1,0 +1,44 @@
+/* wiretables theme: brutalist (black border, hard offset shadow).
+   The --wire-* values are the family's, 1:1 with wiremodal and wirepicker. */
+[data-wire-theme="brutalist"] {
+    --wire-bg: #ffffff;
+    --wire-bg-elevated: #ffffff;
+    --wire-text: #0a0a0a;
+    --wire-text-muted: #525252;
+    --wire-border: #0a0a0a;
+    --wire-border-strong: #0a0a0a;
+    --wire-accent: #fef08a;
+    --wire-radius: 4px;
+    --wire-shadow: 4px 4px 0 0 #0a0a0a;
+}
+[data-wire-theme="brutalist"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="brutalist"] {
+    --wire-bg: #0a0a0a;
+    --wire-bg-elevated: #0a0a0a;
+    --wire-text: #f5f5f5;
+    --wire-text-muted: #a3a3a3;
+    --wire-border: #f5f5f5;
+    --wire-border-strong: #f5f5f5;
+    --wire-shadow: 4px 4px 0 0 #f5f5f5;
+}
+
+[data-wire-theme="brutalist"] {
+    --wtb-line: #0a0a0a;
+    --wtb-head-bg: #fef08a;
+    --wtb-head-text: #0a0a0a;
+    --wtb-head-strong: #0a0a0a;
+    --wtb-row-hover: color-mix(in srgb, #fef08a 35%, transparent);
+    --wtb-shadow: 0 0 0 2px #0a0a0a, 4px 4px 0 0 #0a0a0a;
+    --wtb-menu-radius: 4px;
+    --wtb-menu-shadow: 4px 4px 0 0 #0a0a0a;
+}
+[data-wire-theme="brutalist"] .wtb-head {
+    border-bottom-width: 2px;
+}
+[data-wire-theme="brutalist"][data-wire-theme-mode="dark"],
+.dark[data-wire-theme="brutalist"] {
+    --wtb-line: #f5f5f5;
+    --wtb-head-text: #0a0a0a;
+    --wtb-shadow: 0 0 0 2px #f5f5f5, 4px 4px 0 0 #f5f5f5;
+    --wtb-menu-shadow: 4px 4px 0 0 #f5f5f5;
+}
