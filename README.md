@@ -4,7 +4,7 @@
 
 Tables for Laravel, Livewire and Alpine: Blade components that read the same on a phone and on a desktop, header sorting, and a row actions menu that opens above everything, so no scrolling table or modal cuts it off. Pure CSS, no Tailwind or Bootstrap needed. Part of the `wire*` family: themeable through the shared `data-wire-theme` attribute, visually coherent with [wiremodal](https://github.com/edulazaro/wiremodal), [wiretoast](https://github.com/edulazaro/wiretoast), [wirepicker](https://github.com/edulazaro/wirepicker), [wirecookies](https://github.com/edulazaro/wirecookies) and [wirebug](https://github.com/edulazaro/wirebug).
 
-Blade markup you write · columns that hide instead of scrolling · sorting · row actions menu · 11 themes · 0 runtime deps.
+Blade markup you write · columns that hide or stack into cards · sorting · load more · row actions menu · 11 themes · 0 runtime deps.
 
 It is not a table engine configured from PHP arrays: each table is written in Blade, cell by cell, so a cell that needs something unusual is just Blade. The package brings the pieces, their look, and the behaviour every list repeats.
 
@@ -68,6 +68,46 @@ The row menu needs Alpine with its anchor plugin, both bundled with Livewire 3 a
 
 The first column holds the record and takes the room left; the rest fit their content (`shrink`). A column with `hide="md"` shows from that breakpoint up (`sm`, `md`, `lg`, `xl`, Tailwind's widths), and its `th` and `td` take the same value. Nothing scrolls sideways: what a phone cannot show, the first cell repeats in its slot.
 
+Figures and amounts take `align="right"` on both the `th` and the `td`; a sortable header keeps its arrow on the inner side.
+
+## A footer
+
+Pagination, totals or anything else under the rows goes in the `footer` slot, inside the frame:
+
+```blade
+<x-wiretable>
+    …
+    <x-slot:footer>
+        {{ $projects->links() }}
+    </x-slot:footer>
+</x-wiretable>
+```
+
+## On a phone
+
+Two ways, chosen per table.
+
+**Columns that hide** (the default): each column shows from its `hide` breakpoint up, and the first cell repeats what a phone cannot see. Best for tables with a few columns that matter.
+
+**Rows that stack into cards**: `stack="md"` turns each row into a card below that width, and each cell becomes a line with its `label` above it. Best when every value matters on a phone too.
+
+```blade
+<x-wiretable stack="md" expandable>
+    …
+    <x-wiretable.row wire:key="…">
+        <x-wiretable.td label="Property">…</x-wiretable.td>
+        <x-wiretable.td hide="md" label="Price" align="right">…</x-wiretable.td>
+        <x-wiretable.td actions>…</x-wiretable.td>
+    </x-wiretable.row>
+</x-wiretable>
+```
+
+With `expandable`, the cells that have `hide` fold away in the card and a button in the actions cell unfolds them, one row at a time. On a desktop nothing changes.
+
+## Separated rows
+
+`rows="separated"` draws each row as a card of its own, with a little room between them, instead of one frame with lines. `--wtb-row-gap` sets the room. It combines with `stack`.
+
 ## The first cell
 
 `<x-wiretable.primary>` is the record: its name as a link (`href`), as a button running an Alpine expression (`action`, to open it in place), or as plain text; a muted `subtitle`; a `leading` slot for an avatar or a thumbnail; and, in its default slot, whatever the hidden columns show on narrow screens. On a desktop, hovering the row underlines the name.
@@ -115,6 +155,40 @@ class Projects extends Component
 
 The query maps the key to a column itself. A header can call another method with `method="order"`.
 
+## Load more
+
+For a list that grows instead of paging, `WithLoadMore` and `<x-wiretable.load-more>`:
+
+```php
+use EduLazaro\Wiretables\Concerns\WithLoadMore;
+
+class Properties extends Component
+{
+    use WithLoadMore;
+
+    protected function perLoad(): int
+    {
+        return 30;
+    }
+
+    public function render()
+    {
+        return view('livewire.properties', [
+            'properties' => $this->loadMoreFrom(Property::query()->latest()),
+        ]);
+    }
+}
+```
+
+```blade
+<x-wiretable>
+    …
+</x-wiretable>
+<x-wiretable.load-more :show="$hasMore" />
+```
+
+Each read asks for everything up to the current page from the start, rather than skipping what was loaded: a record added or removed meanwhile would otherwise shift the offset and repeat or lose rows. The page count is locked, so the client cannot ask for a thousand rows at once. Any property update (a filter, the search) and any new order (`WithSorting`) start again from the first page. The button is busy while the next page comes.
+
 ## The row menu
 
 `<x-wiretable.menu :label="…">` is the row's "⋯": a button and a menu of actions.
@@ -137,16 +211,23 @@ A `menu-item` is a link with `href` and a button otherwise (`wire:click`, `x-on:
 
 | Component | Attribute | |
 |---|---|---|
+| `x-wiretable` | `stack` | `sm`, `md`, `lg` or `xl`: below it, rows become cards |
+| | `expandable` | With `stack`, the cells with `hide` fold behind a button |
+| | `rows` | `separated`: each row a card of its own |
+| | slot `footer` | Under the rows, inside the frame |
 | `x-wiretable.th` | `hide` | `sm`, `md`, `lg` or `xl`: the breakpoint from which the column shows |
 | | `shrink` | As wide as its content |
 | | `actions` | The narrow last column; its text is for screen readers only ("Actions" by default) |
+| | `align` | `right` for figures and amounts |
 | | `sortable`, `sort`, `direction`, `method` | Header sorting, above |
-| `x-wiretable.td` | `hide`, `shrink`, `actions` | The same as its column's header |
-| `x-wiretable.primary` | `title`, `subtitle`, `href`, `action` | The record, above; slots `leading` and default |
+| `x-wiretable.td` | `hide`, `shrink`, `actions`, `align` | The same as its column's header |
+| | `label` | What the cell is, shown above it when the table stacks |
+| `x-wiretable.primary` | `title`, `subtitle`, `href`, `action`, `navigate` | The record, above (`navigate` adds `wire:navigate`); slots `leading` and default |
 | `x-wiretable.empty` | `colspan` | The row shown when the list is empty |
 | `x-wiretable.menu` | `label` | The button's accessible name |
 | `x-wiretable.menu-item` | `href`, `danger` | A link or a button; slot `leading` for an icon |
 | `x-wiretable.menu-separator` | | A line between groups |
+| `x-wiretable.load-more` | `show`, `method` | The "Load more" button, while there is more |
 
 Any other attribute (`class`, `wire:key`, `data-*`) lands on the element.
 
@@ -193,10 +274,13 @@ Everything is a CSS variable. The `--wire-*` tokens are shared with the family, 
 |---|---|
 | `--wtb-bg`, `--wtb-text`, `--wtb-muted`, `--wtb-faint`, `--wtb-line`, `--wtb-row-hover` | Colours: ground, ink, secondary text, the idle sort icon, lines, a hovered row |
 | `--wtb-head-bg`, `--wtb-head-text`, `--wtb-head-strong` | The header, and its sorted or hovered column |
+| `--wtb-head-font-weight`, `--wtb-head-text-transform`, `--wtb-head-letter-spacing` | Small caps headers: `uppercase`, `0.05em` |
 | `--wtb-radius`, `--wtb-shadow`, `--wtb-font`, `--wtb-font-size`, `--wtb-head-font-size`, `--wtb-head-line-height` | Shape and type (`--wtb-font` inherits the page's by default) |
 | `--wtb-head-padding`, `--wtb-cell-padding`, `--wtb-actions-head-padding`, `--wtb-actions-cell-padding`, `--wtb-empty-padding` | Spacing |
 | `--wtb-menu-bg`, `--wtb-menu-shadow`, `--wtb-menu-radius`, `--wtb-menu-width`, `--wtb-menu-font-size`, `--wtb-menu-z-index` | The row menu |
-| `--wtb-menu-item-hover`, `--wtb-danger` | A hovered action, and a dangerous one |
+| `--wtb-menu-item-hover`, `--wtb-danger`, `--wtb-menu-icon-size` | A hovered action, a dangerous one, the size of its icon |
+| `--wtb-footer-padding`, `--wtb-row-gap`, `--wtb-card-padding`, `--wtb-label-font-size` | The footer, separated rows, stacked cards |
+| `--wtb-accent`, `--wtb-accent-text` | The "Load more" button |
 
 The package sets every value it relies on (borders, margins, button resets), so a table looks the same with or without a CSS framework's reset underneath.
 
@@ -204,16 +288,19 @@ The package sets every value it relies on (borders, margins, button resets), so 
 
 ```
 .wtb-table                 the frame: radius, line, horizontal scroll as a safety net
+                           (.wtb-stack-{sm,md,lg,xl}, .wtb-separated)
   table.wtb-grid
     thead.wtb-head
       th.wtb-th            .wtb-shrink, .wtb-actions, .wtb-from-{sm,md,lg,xl}
         button.wtb-sort    .wtb-sorted, with .wtb-sort-icon
     tbody.wtb-body
       tr.wtb-row
-        td.wtb-td          .wtb-nowrap, .wtb-actions, .wtb-from-*
+        td.wtb-td          .wtb-nowrap, .wtb-actions, .wtb-right, .wtb-from-*, [data-label]
           .wtb-primary     .wtb-title (-link, -button, -text), .wtb-subtitle
           .wtb-menu        .wtb-menu-trigger
       td.wtb-empty
+  .wtb-footer
+.wtb-load-more             button.wtb-load-more-button
 
 .wtb-menu-panel            the row menu, on <body>
   .wtb-menu-item           .wtb-danger
@@ -222,7 +309,7 @@ The package sets every value it relies on (borders, margins, button resets), so 
 
 ## Languages
 
-The one word of its own, the actions column's label for screen readers, ships in English and Spanish:
+Its few words (the actions column's label for screen readers, "Show more", "Load more") ship in English and Spanish:
 
 ```bash
 php artisan vendor:publish --tag=wiretables-lang

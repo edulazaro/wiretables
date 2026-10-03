@@ -38,6 +38,14 @@
     --wtb-menu-font-size: 0.875rem;
     --wtb-menu-line-height: calc(1.25 / 0.875);
     --wtb-menu-z-index: 40;
+    --wtb-menu-icon-size: 18px;
+    --wtb-head-font-weight: 500;
+    --wtb-head-text-transform: none;
+    --wtb-head-letter-spacing: normal;
+    --wtb-footer-padding: 12px 20px;
+    --wtb-row-gap: 4px;
+    --wtb-card-padding: 12px 16px;
+    --wtb-label-font-size: 12px;
 }
 
 /* Tokens built from the --wire-* ones. A custom property resolves where it is declared, so
@@ -63,6 +71,8 @@
     --wtb-menu-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --wtb-menu-item-hover: color-mix(in oklab, var(--wtb-text) 4%, transparent);
     --wtb-danger: #dc2626;
+    --wtb-accent: var(--wire-accent);
+    --wtb-accent-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -120,7 +130,9 @@
 
 .wtb-th {
     padding: var(--wtb-head-padding);
-    font-weight: 500;
+    font-weight: var(--wtb-head-font-weight);
+    text-transform: var(--wtb-head-text-transform);
+    letter-spacing: var(--wtb-head-letter-spacing);
     text-align: inherit;
     vertical-align: middle;
 }
@@ -146,6 +158,16 @@
 
 .wtb-nowrap {
     white-space: nowrap;
+}
+
+.wtb-th.wtb-right,
+.wtb-td.wtb-right {
+    text-align: right;
+}
+
+/* A right-aligned sortable header keeps its arrow on the inner side. */
+.wtb-th.wtb-right .wtb-sort {
+    flex-direction: row-reverse;
 }
 
 /* A column shows from its breakpoint up (the same widths as Tailwind's sm, md, lg, xl). */
@@ -202,7 +224,9 @@
     background: transparent;
     color: inherit;
     font: inherit;
-    font-weight: 500;
+    font-weight: var(--wtb-head-font-weight);
+    letter-spacing: inherit;
+    text-transform: inherit;
     cursor: pointer;
 }
 
@@ -384,8 +408,8 @@
 .wtb-menu-item > svg {
     display: block;
     flex-shrink: 0;
-    width: 18px;
-    height: 18px;
+    width: var(--wtb-menu-icon-size);
+    height: var(--wtb-menu-icon-size);
     vertical-align: middle;
 }
 
@@ -397,6 +421,422 @@
 
 .wtb-menu-panel[x-cloak] {
     display: none !important;
+}
+
+/* =========================================================
+   Footer: pagination, totals, "Load more"
+   ========================================================= */
+.wtb-footer {
+    padding: var(--wtb-footer-padding);
+    border-top: 1px solid var(--wtb-line);
+}
+
+.wtb-load-more {
+    display: flex;
+    justify-content: center;
+}
+
+.wtb-load-more-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9rem;
+    min-height: 38px;
+    margin: 0;
+    padding: 8px 20px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--wtb-accent);
+    color: var(--wtb-accent-text);
+    font: inherit;
+    font-size: var(--wtb-head-font-size);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.wtb-load-more-button:disabled {
+    opacity: 0.7;
+    cursor: progress;
+}
+
+/* Hidden until Livewire's wire:loading shows it: no flash before Livewire starts. */
+.wtb-spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    animation: wtb-spin 0.8s linear infinite;
+}
+
+@keyframes wtb-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   rows="separated": each row a card of its own
+   Separate borders, so each cell draws its part of the card.
+   ========================================================= */
+.wtb-separated {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.wtb-separated .wtb-grid {
+    border-collapse: separate;
+    border-spacing: 0 var(--wtb-row-gap);
+}
+
+.wtb-separated .wtb-head {
+    border-bottom: 0;
+}
+
+.wtb-separated .wtb-row > .wtb-td,
+.wtb-separated .wtb-empty {
+    background: var(--wtb-bg);
+    border-top: 1px solid var(--wtb-line);
+    border-bottom: 1px solid var(--wtb-line);
+}
+
+.wtb-separated .wtb-row > .wtb-td:first-child,
+.wtb-separated .wtb-empty {
+    border-left: 1px solid var(--wtb-line);
+    border-top-left-radius: var(--wtb-radius);
+    border-bottom-left-radius: var(--wtb-radius);
+}
+
+.wtb-separated .wtb-row > .wtb-td:last-child,
+.wtb-separated .wtb-empty {
+    border-right: 1px solid var(--wtb-line);
+    border-top-right-radius: var(--wtb-radius);
+    border-bottom-right-radius: var(--wtb-radius);
+}
+
+@media (hover: hover) {
+    .wtb-separated .wtb-row:hover {
+        background-color: transparent;
+    }
+
+    .wtb-separated .wtb-row:hover > .wtb-td {
+        background-color: color-mix(in srgb, var(--wtb-row-hover), var(--wtb-bg));
+    }
+}
+
+.wtb-separated .wtb-footer {
+    border-top: 0;
+}
+
+/* =========================================================
+   stack="sm|md|lg|xl": below that width each row is a card,
+   each cell a labelled line; expandable folds the cells with
+   `hide` behind a button in the actions cell.
+   ========================================================= */
+.wtb-actions-inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.wtb-expand {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--wtb-muted);
+    cursor: pointer;
+}
+
+.wtb-expand-icon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    transition: transform 150ms ease;
+}
+
+.wtb-open .wtb-expand-icon {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 39.99rem) {
+    .wtb-stack-sm .wtb-grid,
+    .wtb-stack-sm .wtb-body {
+        display: block;
+    }
+
+    .wtb-stack-sm .wtb-head {
+        display: none;
+    }
+
+    .wtb-stack-sm .wtb-row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: var(--wtb-card-padding);
+    }
+
+    .wtb-stack-sm .wtb-row > .wtb-td {
+        display: block;
+        padding: 0;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .wtb-stack-sm .wtb-row > .wtb-td:first-child {
+        padding-right: 48px;
+    }
+
+    .wtb-stack-sm .wtb-row > .wtb-td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        color: var(--wtb-muted);
+        font-size: var(--wtb-label-font-size);
+    }
+
+    .wtb-stack-sm .wtb-row > .wtb-td.wtb-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    .wtb-stack-sm .wtb-row:not(.wtb-open)[x-data] > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        display: none;
+    }
+
+    .wtb-stack-sm .wtb-expand {
+        display: flex;
+    }
+
+    .wtb-stack-sm.wtb-separated .wtb-grid {
+        border-spacing: 0;
+    }
+
+    .wtb-stack-sm.wtb-separated .wtb-row {
+        margin-bottom: var(--wtb-row-gap);
+        border: 1px solid var(--wtb-line);
+        border-radius: var(--wtb-radius);
+        background: var(--wtb-bg);
+    }
+
+    .wtb-stack-sm.wtb-separated .wtb-row > .wtb-td {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+}
+
+@media (max-width: 47.99rem) {
+    .wtb-stack-md .wtb-grid,
+    .wtb-stack-md .wtb-body {
+        display: block;
+    }
+
+    .wtb-stack-md .wtb-head {
+        display: none;
+    }
+
+    .wtb-stack-md .wtb-row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: var(--wtb-card-padding);
+    }
+
+    .wtb-stack-md .wtb-row > .wtb-td {
+        display: block;
+        padding: 0;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .wtb-stack-md .wtb-row > .wtb-td:first-child {
+        padding-right: 48px;
+    }
+
+    .wtb-stack-md .wtb-row > .wtb-td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        color: var(--wtb-muted);
+        font-size: var(--wtb-label-font-size);
+    }
+
+    .wtb-stack-md .wtb-row > .wtb-td.wtb-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    .wtb-stack-md .wtb-row:not(.wtb-open)[x-data] > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        display: none;
+    }
+
+    .wtb-stack-md .wtb-expand {
+        display: flex;
+    }
+
+    .wtb-stack-md.wtb-separated .wtb-grid {
+        border-spacing: 0;
+    }
+
+    .wtb-stack-md.wtb-separated .wtb-row {
+        margin-bottom: var(--wtb-row-gap);
+        border: 1px solid var(--wtb-line);
+        border-radius: var(--wtb-radius);
+        background: var(--wtb-bg);
+    }
+
+    .wtb-stack-md.wtb-separated .wtb-row > .wtb-td {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+}
+
+@media (max-width: 63.99rem) {
+    .wtb-stack-lg .wtb-grid,
+    .wtb-stack-lg .wtb-body {
+        display: block;
+    }
+
+    .wtb-stack-lg .wtb-head {
+        display: none;
+    }
+
+    .wtb-stack-lg .wtb-row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: var(--wtb-card-padding);
+    }
+
+    .wtb-stack-lg .wtb-row > .wtb-td {
+        display: block;
+        padding: 0;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .wtb-stack-lg .wtb-row > .wtb-td:first-child {
+        padding-right: 48px;
+    }
+
+    .wtb-stack-lg .wtb-row > .wtb-td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        color: var(--wtb-muted);
+        font-size: var(--wtb-label-font-size);
+    }
+
+    .wtb-stack-lg .wtb-row > .wtb-td.wtb-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    .wtb-stack-lg .wtb-row:not(.wtb-open)[x-data] > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        display: none;
+    }
+
+    .wtb-stack-lg .wtb-expand {
+        display: flex;
+    }
+
+    .wtb-stack-lg.wtb-separated .wtb-grid {
+        border-spacing: 0;
+    }
+
+    .wtb-stack-lg.wtb-separated .wtb-row {
+        margin-bottom: var(--wtb-row-gap);
+        border: 1px solid var(--wtb-line);
+        border-radius: var(--wtb-radius);
+        background: var(--wtb-bg);
+    }
+
+    .wtb-stack-lg.wtb-separated .wtb-row > .wtb-td {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+}
+
+@media (max-width: 79.99rem) {
+    .wtb-stack-xl .wtb-grid,
+    .wtb-stack-xl .wtb-body {
+        display: block;
+    }
+
+    .wtb-stack-xl .wtb-head {
+        display: none;
+    }
+
+    .wtb-stack-xl .wtb-row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: var(--wtb-card-padding);
+    }
+
+    .wtb-stack-xl .wtb-row > .wtb-td {
+        display: block;
+        padding: 0;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .wtb-stack-xl .wtb-row > .wtb-td:first-child {
+        padding-right: 48px;
+    }
+
+    .wtb-stack-xl .wtb-row > .wtb-td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        color: var(--wtb-muted);
+        font-size: var(--wtb-label-font-size);
+    }
+
+    .wtb-stack-xl .wtb-row > .wtb-td.wtb-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+
+    .wtb-stack-xl .wtb-row:not(.wtb-open)[x-data] > .wtb-td:is(.wtb-from-sm, .wtb-from-md, .wtb-from-lg, .wtb-from-xl) {
+        display: none;
+    }
+
+    .wtb-stack-xl .wtb-expand {
+        display: flex;
+    }
+
+    .wtb-stack-xl.wtb-separated .wtb-grid {
+        border-spacing: 0;
+    }
+
+    .wtb-stack-xl.wtb-separated .wtb-row {
+        margin-bottom: var(--wtb-row-gap);
+        border: 1px solid var(--wtb-line);
+        border-radius: var(--wtb-radius);
+        background: var(--wtb-bg);
+    }
+
+    .wtb-stack-xl.wtb-separated .wtb-row > .wtb-td {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
 }
 
 /* wiretables theme: soft (tinted with the accent).

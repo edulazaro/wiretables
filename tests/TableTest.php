@@ -103,4 +103,63 @@ class TableTest extends TestCase
         $this->assertStringContainsString('wire:click="remove(1)"', $button);
         $this->assertStringContainsString('<div role="separator" class="wtb-menu-separator"></div>', $separator);
     }
+
+    public function test_figures_align_right_with_the_arrow_inside(): void
+    {
+        $th = Blade::render('<x-wiretable.th align="right" sortable="total" sort="" direction="">Total</x-wiretable.th>');
+        $td = Blade::render('<x-wiretable.td align="right" shrink>1.200 €</x-wiretable.td>');
+
+        $this->assertStringContainsString('class="wtb-th wtb-right"', $th);
+        $this->assertStringContainsString('class="wtb-td wtb-nowrap wtb-right"', $td);
+    }
+
+    public function test_the_name_can_navigate_without_a_reload(): void
+    {
+        $html = Blade::render('<x-wiretable.primary title="Gala" href="/p/1" navigate />');
+
+        $this->assertStringContainsString('wire:navigate', $html);
+        $this->assertStringNotContainsString('wire:navigate', Blade::render('<x-wiretable.primary title="Gala" href="/p/1" />'));
+    }
+
+    public function test_a_footer_sits_under_the_rows_only_when_given(): void
+    {
+        $with = Blade::render("<x-wiretable>\n<x-slot:head><x-wiretable.th>A</x-wiretable.th></x-slot:head>\n<x-slot:footer>\nPages\n</x-slot:footer>\n</x-wiretable>");
+        $without = Blade::render("<x-wiretable>\n<x-slot:head><x-wiretable.th>A</x-wiretable.th></x-slot:head>\n</x-wiretable>");
+
+        $this->assertMatchesRegularExpression('/<div class="wtb-footer">\s*Pages\s*<\/div>/', $with);
+        $this->assertStringNotContainsString('wtb-footer', $without);
+    }
+
+    public function test_load_more_shows_only_while_there_is_more(): void
+    {
+        app()->setLocale('es');
+
+        $this->assertStringContainsString('wire:click="loadMore"', Blade::render('<x-wiretable.load-more :show="true" />'));
+        $this->assertStringContainsString('Cargar más', Blade::render('<x-wiretable.load-more :show="true" />'));
+        $this->assertStringNotContainsString('wtb-load-more', Blade::render('<x-wiretable.load-more :show="false" />'));
+    }
+
+    public function test_a_stacked_expandable_table_folds_its_rows(): void
+    {
+        $html = Blade::render(<<<'BLADE'
+            <x-wiretable stack="md" expandable rows="separated">
+                <x-slot:head><x-wiretable.th>Name</x-wiretable.th></x-slot:head>
+                <x-wiretable.row>
+                    <x-wiretable.td label="Name">Gala</x-wiretable.td>
+                    <x-wiretable.td hide="md" label="Date">8 Oct</x-wiretable.td>
+                    <x-wiretable.td actions>⋯</x-wiretable.td>
+                </x-wiretable.row>
+            </x-wiretable>
+            BLADE);
+
+        $this->assertStringContainsString('class="wtb-table wtb-stack-md wtb-separated"', $html);
+        $this->assertStringContainsString('x-data="{ open: false }"', $html);
+        $this->assertStringContainsString('data-label="Date"', $html);
+        $this->assertStringContainsString('class="wtb-expand"', $html);
+
+        $plain = Blade::render("<x-wiretable>\n<x-slot:head><x-wiretable.th>A</x-wiretable.th></x-slot:head>\n<x-wiretable.row><x-wiretable.td actions>⋯</x-wiretable.td></x-wiretable.row>\n</x-wiretable>");
+
+        $this->assertStringNotContainsString('x-data', $plain);
+        $this->assertStringNotContainsString('wtb-expand', $plain);
+    }
 }
