@@ -8,6 +8,10 @@ use Illuminate\View\Compilers\BladeCompiler;
 class WiretablesServiceProvider extends ServiceProvider
 {
     /**
+     * The components are anonymous, registered by path: `<x-wiretable>` is
+     * `components/wiretable/index.blade.php` and `<x-wiretable.th>` its `th.blade.php`, so the
+     * pieces read as one family.
+     *
      * @return void
      */
     public function boot(): void
@@ -27,8 +31,6 @@ class WiretablesServiceProvider extends ServiceProvider
             __DIR__.'/../resources/css' => public_path('vendor/wiretables/css'),
         ], 'wiretables-assets');
 
-        // Anonymous components: <x-wiretable> is components/wiretable/index.blade.php and
-        // <x-wiretable.th> its th.blade.php, so the pieces read as one family.
         $this->callAfterResolving(BladeCompiler::class, function (BladeCompiler $blade) {
             $blade->anonymousComponentPath(__DIR__.'/../resources/views/components');
         });
