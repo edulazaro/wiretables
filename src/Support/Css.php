@@ -8,7 +8,7 @@ namespace EduLazaro\Wiretables\Support;
 final class Css
 {
     /** The themes, in the family's order. */
-    public const THEMES = ['soft', 'glass', 'gradient', 'neon', 'minimal', 'claude', 'chatgpt', 'studio', 'synthwave', 'megaflow', 'brutalist'];
+    public const THEMES = ['soft', 'glass', 'gradient', 'neon', 'minimal', 'claude', 'chatgpt', 'studio', 'synthwave', 'megaflow', 'brutalist', 'toxic'];
 
     /**
      * The core and every theme, as `wiretables.css` holds them.

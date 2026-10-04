@@ -1,0 +1,31 @@
+/* wiretables theme: toxic (swamp dark, lime accent).
+   The --wire-* values are the family's, so a page that also themes wiremodal or wirepicker
+   with them gets the same swamp. Dark always, like neon: it has no light mode to fall into. */
+[data-wire-theme="toxic"] {
+    --wire-bg: #0c1317;
+    --wire-bg-elevated: #111b20;
+    --wire-accent: #a3e635;
+    --wire-text: #ecfccb;
+    --wire-text-muted: rgba(217, 249, 157, 0.62);
+    --wire-border: rgba(163, 230, 53, 0.18);
+    --wire-border-strong: rgba(163, 230, 53, 0.4);
+    --wire-radius: 12px;
+    --wire-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(163, 230, 53, 0.08);
+}
+
+[data-wire-theme="toxic"] {
+    --wtb-head-bg: rgba(0, 0, 0, 0.25);
+    --wtb-head-text: rgba(190, 242, 100, 0.6);
+    --wtb-head-strong: var(--wire-accent);
+    --wtb-head-font-size: 0.75rem;
+    --wtb-head-text-transform: uppercase;
+    --wtb-head-letter-spacing: 0.06em;
+    --wtb-row-hover: rgba(163, 230, 53, 0.05);
+    --wtb-faint: rgba(217, 249, 157, 0.35);
+    /* Opaque: a menu over a translucent table over the page stops being readable. */
+    --wtb-menu-bg: var(--wire-bg-elevated);
+    --wtb-menu-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--wire-border);
+    --wtb-menu-item-hover: rgba(163, 230, 53, 0.1);
+    --wtb-danger: #fb7185;
+    --wtb-accent-text: #0c1317;
+}

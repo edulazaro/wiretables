@@ -4,7 +4,7 @@
 
 Tables for Laravel, Livewire and Alpine: Blade components that read the same on a phone and on a desktop, header sorting, and a row actions menu that opens above everything, so no scrolling table or modal cuts it off. Pure CSS, no Tailwind or Bootstrap needed. Part of the `wire*` family: themeable through the shared `data-wire-theme` attribute, visually coherent with [wiremodal](https://github.com/edulazaro/wiremodal), [wiretoast](https://github.com/edulazaro/wiretoast), [wirepicker](https://github.com/edulazaro/wirepicker), [wirecookies](https://github.com/edulazaro/wirecookies) and [wirebug](https://github.com/edulazaro/wirebug).
 
-Blade markup you write · columns that hide or stack into cards · sorting · load more · row actions menu · 11 themes · 0 runtime deps.
+Blade markup you write · columns that hide or stack into cards · sorting · load more · row actions menu · 12 themes · 0 runtime deps.
 
 It is not a table engine configured from PHP arrays: each table is written in Blade, cell by cell, so a cell that needs something unusual is just Blade. The package brings the pieces, their look, and the behaviour every list repeats.
 
@@ -265,6 +265,7 @@ Pick the theme once on `<html>`, shared with the rest of the family, and import 
 | `synthwave` | Retro 80s purple and magenta |
 | `megaflow` | Flowbite-style: clean white card, gray header |
 | `brutalist` | Black border, hard offset shadow, yellow header |
+| `toxic` | Swamp dark, lime accent, small caps lime header; dark only |
 
 Dark mode: `data-wire-theme-mode="dark"` or a `.dark` ancestor. The row menu opens on `<body>`, so it follows a theme set on `<html>`.
 
