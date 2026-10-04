@@ -157,6 +157,17 @@
     white-space: nowrap;
 }
 
+/* A cell that cuts its text with an ellipsis instead of widening the column. `max-width: 0`
+   is what makes it work in a table: the column then takes its share of the table's width and
+   the text is cut there, instead of the content deciding how wide the column is. Without it,
+   `overflow` and `text-overflow` on a cell do nothing, because the cell grows to fit. */
+.wtb-truncate {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .wtb-th.wtb-right,
 .wtb-td.wtb-right {
     text-align: right;
@@ -401,6 +412,12 @@
     color: var(--wtb-danger);
 }
 
+/* `align="right"` on the menu: the items' text on the right, the icon still before it. */
+.wtb-menu-right .wtb-menu-item {
+    justify-content: flex-end;
+    text-align: right;
+}
+
 /* An icon passed in `leading` or first in the slot. */
 .wtb-menu-item > svg {
     display: block;
@@ -605,8 +622,11 @@
 
     .wtb-stack-sm .wtb-row > .wtb-td {
         display: block;
+        max-width: none;
+        overflow: visible;
         padding: 0;
         text-align: left;
+        text-overflow: clip;
         white-space: normal;
     }
 
@@ -674,8 +694,11 @@
 
     .wtb-stack-md .wtb-row > .wtb-td {
         display: block;
+        max-width: none;
+        overflow: visible;
         padding: 0;
         text-align: left;
+        text-overflow: clip;
         white-space: normal;
     }
 
@@ -743,8 +766,11 @@
 
     .wtb-stack-lg .wtb-row > .wtb-td {
         display: block;
+        max-width: none;
+        overflow: visible;
         padding: 0;
         text-align: left;
+        text-overflow: clip;
         white-space: normal;
     }
 
@@ -812,8 +838,11 @@
 
     .wtb-stack-xl .wtb-row > .wtb-td {
         display: block;
+        max-width: none;
+        overflow: visible;
         padding: 0;
         text-align: left;
+        text-overflow: clip;
         white-space: normal;
     }
 

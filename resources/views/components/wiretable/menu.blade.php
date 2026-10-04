@@ -1,8 +1,9 @@
-@props(['label'])
+@props(['label', 'align' => 'left'])
 
 {{-- A row's "⋯". The menu is moved to <body> and anchored to its button (Alpine's x-teleport and
      x-anchor, both bundled with Livewire), because a table that scrolls sideways clips anything
-     that overflows it. Choosing an item closes it. --}}
+     that overflows it. Choosing an item closes it. `align="right"` puts the items' text on the
+     right, for an interface whose menus all read that way; left is the default and the norm. --}}
 <div x-data="{ open: false }" {{ $attributes->class('wtb-menu') }}>
     <button type="button" x-ref="trigger" x-on:click="open = ! open" x-bind:aria-expanded="open.toString()" aria-label="{{ $label }}"
             class="wtb-menu-trigger">
@@ -15,7 +16,7 @@
              x-on:keydown.escape.window="open = false"
              x-on:click="open = false"
              x-transition:enter.scale.95.origin.top.right.duration.100ms
-             class="wtb-menu-panel">
+             @class(['wtb-menu-panel', 'wtb-menu-right' => $align === 'right'])>
             {{ $slot }}
         </div>
     </template>

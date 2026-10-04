@@ -70,6 +70,15 @@ The first column holds the record and takes the room left; the rest fit their co
 
 Figures and amounts take `align="right"` on both the `th` and the `td`; a sortable header keeps its arrow on the inner side.
 
+A cell that can hold anything, a name, an address, a note, takes `truncate`, and its text is cut with an ellipsis instead of widening the column:
+
+```blade
+<x-wiretable.th truncate>Address</x-wiretable.th>
+<x-wiretable.td truncate>{{ $client->address }}</x-wiretable.td>
+```
+
+It goes on both, since in a table the widest cell of a column decides how wide the column is. The column then takes its share of the table's width, so one long value no longer pushes the table past the screen. In a stacked card it undoes itself, because there the text is read whole. `<x-wiretable.primary>` already cuts its title this way, with no attribute.
+
 ## A footer
 
 Pagination, totals or anything else under the rows goes in the `footer` slot, inside the frame:
@@ -236,7 +245,7 @@ When each record reads as a card rather than a row of columns (a title with badg
 | | `label` | What the cell is, shown above it when the table stacks |
 | `x-wiretable.primary` | `title`, `subtitle`, `href`, `action`, `navigate` | The record, above (`navigate` adds `wire:navigate`); slots `leading` and default |
 | `x-wiretable.empty` | `colspan` | The row shown when the list is empty |
-| `x-wiretable.menu` | `label` | The button's accessible name |
+| `x-wiretable.menu` | `label`, `align` | The button's accessible name; `align="right"` puts the items' text on the right (left by default) |
 | `x-wiretable.menu-item` | `href`, `danger` | A link or a button; slot `leading` for an icon |
 | `x-wiretable.menu-separator` | | A line between groups |
 | `x-wiretable.load-more` | `show`, `method` | The "Load more" button, while there is more |

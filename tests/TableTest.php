@@ -33,6 +33,34 @@ class TableTest extends TestCase
         $this->assertStringContainsString('class="wtb-td"', $odd);
     }
 
+    public function test_a_truncating_column_cuts_its_text_instead_of_growing(): void
+    {
+        $th = Blade::render('<x-wiretable.th truncate>Address</x-wiretable.th>');
+        $td = Blade::render('<x-wiretable.td truncate>A very long address indeed</x-wiretable.td>');
+
+        // It goes on both: in a table the widest cell of a column decides the column's width,
+        // so capping only one of the two leaves the other free to grow.
+        $this->assertStringContainsString('class="wtb-th wtb-truncate"', $th);
+        $this->assertStringContainsString('class="wtb-td wtb-truncate"', $td);
+
+        // `max-width: 0` is what makes it work: without it the cell grows to fit its text and
+        // the overflow rules never come into play.
+        $css = file_get_contents(__DIR__.'/../resources/css/wiretables-core.css');
+
+        $this->assertMatchesRegularExpression('/\.wtb-truncate\s*\{[^}]*max-width:\s*0/', $css);
+        $this->assertMatchesRegularExpression('/\.wtb-truncate\s*\{[^}]*text-overflow:\s*ellipsis/', $css);
+
+        // And it undoes itself in a stacked card, where there is room and the text is read
+        // whole: a cell left at `max-width: 0` while `display: block` would show nothing.
+        foreach (['sm', 'md', 'lg', 'xl'] as $breakpoint) {
+            $this->assertMatchesRegularExpression(
+                '/\.wtb-stack-'.$breakpoint.' \.wtb-row > \.wtb-td \{[^}]*max-width:\s*none/',
+                $css,
+                "The {$breakpoint} card does not undo the truncation.",
+            );
+        }
+    }
+
     public function test_the_actions_column_is_labelled_for_screen_readers_only(): void
     {
         app()->setLocale('es');
@@ -89,6 +117,16 @@ class TableTest extends TestCase
         $this->assertStringContainsString('x-anchor.bottom-end.offset.4="$refs.trigger"', $html);
         $this->assertStringContainsString('class="wtb-menu-panel"', $html);
         $this->assertStringContainsString('<a href="/p/1">Open</a>', $html);
+    }
+
+    public function test_the_menu_can_put_its_items_on_the_right(): void
+    {
+        $left = Blade::render('<x-wiretable.menu label="Actions"><a href="/p/1">Open</a></x-wiretable.menu>');
+        $right = Blade::render('<x-wiretable.menu label="Actions" align="right"><a href="/p/1">Open</a></x-wiretable.menu>');
+
+        $this->assertStringContainsString('class="wtb-menu-panel"', $left);
+        $this->assertStringContainsString('class="wtb-menu-panel wtb-menu-right"', $right);
+        $this->assertStringContainsString('.wtb-menu-right .wtb-menu-item', file_get_contents(__DIR__.'/../resources/css/wiretables-core.css'));
     }
 
     public function test_menu_items_are_links_or_buttons_and_can_be_dangerous(): void
