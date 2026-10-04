@@ -7,10 +7,10 @@
      text selection. Ctrl, Cmd or the middle button open `href` in a new tab. Enter opens
      it from the keyboard. --}}
 @if ($href || $action)
-<tr {{ $attributes->class(['wtb-row', 'wtb-row-link']) }} tabindex="0" x-data="{{ $expandable ? '{ open: false }' : '{}' }}"@if ($expandable) x-bind:class="open && 'wtb-open'"@endif
+<tr {{ $attributes->class(['wtb-row', 'wtb-row-link', 'wtb-foldable' => $expandable]) }} tabindex="0" x-data="{{ $expandable ? '{ open: false }' : '{}' }}"@if ($expandable) x-bind:class="open && 'wtb-open'"@endif
     x-on:click="if ($event.target.closest('a, button, input, select, textarea, label, summary, [contenteditable], [data-wtb-ignore]') || String(window.getSelection()) !== '') return; @if ($href) if ($event.ctrlKey || $event.metaKey) { window.open(@js($href), '_blank'); return } @if ($navigate) window.Livewire ? Livewire.navigate(@js($href)) : (window.location.href = @js($href)) @else window.location.href = @js($href) @endif @else {{ $action }} @endif"
     @if ($href) x-on:auxclick="if ($event.button === 1 && ! $event.target.closest('a, button')) window.open(@js($href), '_blank')" @endif
     x-on:keydown.enter.self="@if ($href) @if ($navigate) window.Livewire ? Livewire.navigate(@js($href)) : (window.location.href = @js($href)) @else window.location.href = @js($href) @endif @else {{ $action }} @endif">{{ $slot }}</tr>
 @else
-<tr {{ $attributes->class('wtb-row') }}@if ($expandable) x-data="{ open: false }" x-bind:class="open && 'wtb-open'"@endif>{{ $slot }}</tr>
+<tr {{ $attributes->class(['wtb-row', 'wtb-foldable' => $expandable]) }}@if ($expandable) x-data="{ open: false }" x-bind:class="open && 'wtb-open'"@endif>{{ $slot }}</tr>
 @endif

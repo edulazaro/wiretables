@@ -233,6 +233,42 @@ class TableTest extends TestCase
         $this->assertStringNotContainsString('tabindex', $plain);
     }
 
+    public function test_only_an_expandable_row_folds_its_hidden_cells_in_a_card(): void
+    {
+        $foldable = Blade::render(<<<'BLADE'
+            <x-wiretable stack="md" expandable>
+                <x-slot:head><x-wiretable.th>Name</x-wiretable.th></x-slot:head>
+                <x-wiretable.row><x-wiretable.td>A</x-wiretable.td></x-wiretable.row>
+            </x-wiretable>
+            BLADE);
+
+        // A clickable row that is NOT expandable: it carries `x-data` for the click handler,
+        // and that must not make a card fold its cells, because without `expandable` there is
+        // no button to unfold them and the data would be out of reach on a phone.
+        $clickable = Blade::render(<<<'BLADE'
+            <x-wiretable stack="md">
+                <x-slot:head><x-wiretable.th>Name</x-wiretable.th></x-slot:head>
+                <x-wiretable.row href="/a"><x-wiretable.td hide="md" label="Date">A</x-wiretable.td></x-wiretable.row>
+            </x-wiretable>
+            BLADE);
+
+        $this->assertStringContainsString('wtb-foldable', $foldable);
+        $this->assertStringNotContainsString('wtb-foldable', $clickable);
+        $this->assertStringContainsString('x-data', $clickable, 'The click handler still needs its scope.');
+
+        // And the CSS keys off the class, not off `x-data`.
+        $css = file_get_contents(__DIR__.'/../resources/css/wiretables-core.css');
+
+        $this->assertStringNotContainsString(':not(.wtb-open)[x-data]', $css);
+
+        foreach (['sm', 'md', 'lg', 'xl'] as $breakpoint) {
+            $this->assertStringContainsString(
+                ".wtb-stack-{$breakpoint} .wtb-row.wtb-foldable:not(.wtb-open)",
+                $css,
+            );
+        }
+    }
+
     public function test_the_record_name_is_cut_whatever_it_is_and_read_whole_in_a_card(): void
     {
         $css = file_get_contents(__DIR__.'/../resources/css/wiretables-core.css');

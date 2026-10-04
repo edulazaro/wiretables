@@ -111,7 +111,7 @@ Two ways, chosen per table.
 </x-wiretable>
 ```
 
-With `expandable`, the cells that have `hide` fold away in the card and a button in the actions cell unfolds them, one row at a time. On a desktop nothing changes.
+With `expandable`, the cells that have `hide` fold away in the card and a button in the actions cell unfolds them, one row at a time. On a desktop nothing changes. Only an `expandable` table folds: a clickable row on its own leaves its cells in sight, since there would be no button to unfold them.
 
 Add `compact` for a denser card: the cells without `hide` and the actions share one line, and the cells with `hide` go below it, folded with `expandable`. Leave out their `label` for plain lines.
 
