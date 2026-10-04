@@ -233,6 +233,35 @@ class TableTest extends TestCase
         $this->assertStringNotContainsString('tabindex', $plain);
     }
 
+    public function test_the_record_name_is_cut_whatever_it_is_and_read_whole_in_a_card(): void
+    {
+        $css = file_get_contents(__DIR__.'/../resources/css/wiretables-core.css');
+
+        // On `.wtb-title`, so it holds for the three shapes the name takes: a link, a button
+        // and plain text. While it sat on `.wtb-title-text` only, a row whose name was a link
+        // let a long name decide the width of the column that takes the room left.
+        $this->assertMatchesRegularExpression(
+            '/\n\.wtb-title \{[^}]*text-overflow:\s*ellipsis/',
+            $css,
+        );
+        $this->assertMatchesRegularExpression('/\n\.wtb-title \{[^}]*display:\s*block/', $css);
+
+        // The plain-text variant no longer carries its own copy.
+        $this->assertDoesNotMatchRegularExpression(
+            '/\.wtb-title-text \{[^}]*text-overflow/',
+            $css,
+        );
+
+        // And a card reads it whole: there is room and nothing to push.
+        foreach (['sm', 'md', 'lg', 'xl'] as $breakpoint) {
+            $this->assertMatchesRegularExpression(
+                '/\.wtb-stack-'.$breakpoint.' \.wtb-row \.wtb-title \{[^}]*white-space:\s*normal/',
+                $css,
+                "The {$breakpoint} card still cuts the name to one line.",
+            );
+        }
+    }
+
     public function test_a_clickable_row_underlines_the_record_name_on_hover(): void
     {
         // With the link on the row, the title is a plain <p>, not an <a>, so the rule that

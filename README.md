@@ -77,7 +77,7 @@ A cell that can hold anything, a name, an address, a note, takes `truncate`, and
 <x-wiretable.td truncate>{{ $client->address }}</x-wiretable.td>
 ```
 
-It goes on both, since in a table the widest cell of a column decides how wide the column is. The column then takes its share of the table's width, so one long value no longer pushes the table past the screen. In a stacked card it undoes itself, because there the text is read whole. `<x-wiretable.primary>` already cuts its title this way, with no attribute.
+It goes on both, since in a table the widest cell of a column decides how wide the column is. The column then takes its share of the table's width, so one long value no longer pushes the table past the screen. In a stacked card it undoes itself, because there the text is read whole. The record's name in `<x-wiretable.primary>` is already cut this way with no attribute, as a link, a button or plain text alike, and it too is read whole in a card.
 
 ## A footer
 

@@ -296,9 +296,17 @@
     min-width: 0;
 }
 
+/* The name is cut with an ellipsis whether it is text, a link or a button. It used to be
+   only the plain text, so a row whose name was a link, which is the usual case, still let a
+   long name decide how wide the record's column was, and that column is the one that takes
+   the room left. `display: block` is what gives the anchor a box to cut inside. */
 .wtb-title {
+    display: block;
+    overflow: hidden;
     color: var(--wtb-text);
     font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .wtb-title-link {
@@ -318,9 +326,6 @@
 
 .wtb-title-text {
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 @media (hover: hover) {
@@ -652,6 +657,12 @@
         padding-right: 48px;
     }
 
+    .wtb-stack-sm .wtb-row .wtb-title {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
+    }
+
     .wtb-stack-sm .wtb-row > .wtb-td[data-label]::before {
         content: attr(data-label);
         display: block;
@@ -722,6 +733,12 @@
 
     .wtb-stack-md .wtb-row > .wtb-td:first-child {
         padding-right: 48px;
+    }
+
+    .wtb-stack-md .wtb-row .wtb-title {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
     }
 
     .wtb-stack-md .wtb-row > .wtb-td[data-label]::before {
@@ -796,6 +813,12 @@
         padding-right: 48px;
     }
 
+    .wtb-stack-lg .wtb-row .wtb-title {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
+    }
+
     .wtb-stack-lg .wtb-row > .wtb-td[data-label]::before {
         content: attr(data-label);
         display: block;
@@ -866,6 +889,12 @@
 
     .wtb-stack-xl .wtb-row > .wtb-td:first-child {
         padding-right: 48px;
+    }
+
+    .wtb-stack-xl .wtb-row .wtb-title {
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
     }
 
     .wtb-stack-xl .wtb-row > .wtb-td[data-label]::before {
