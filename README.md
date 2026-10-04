@@ -133,6 +133,22 @@ Add `compact` for a denser card: the cells without `hide` and the actions share 
 </x-wiretable.primary>
 ```
 
+## Clickable rows
+
+Give the row an `href` (with `navigate` for no reload) or an `action` (an Alpine expression) and the whole row opens it. Everything interactive inside keeps working on its own: the row menu, a link in a cell, a checkbox, a select. A click that ends a text selection does nothing, Ctrl, Cmd or the middle button open the `href` in a new tab, and the row is reachable with Tab and opens with Enter.
+
+```blade
+<x-wiretable.row :href="route('clients.show', $client)" navigate wire:key="client-{{ $client->id }}">
+    …
+</x-wiretable.row>
+
+<x-wiretable.row action="$wire.edit({{ $rule->id }})">
+    …
+</x-wiretable.row>
+```
+
+Anything else that should not open the row takes `data-wtb-ignore`.
+
 ## Sorting
 
 Give a header a `sortable` key and the component's `sort` and `direction`, and it becomes a button that shows the order it is in:
@@ -244,6 +260,7 @@ When each record reads as a card rather than a row of columns (a title with badg
 | `x-wiretable.td` | `hide`, `shrink`, `actions`, `align` | The same as its column's header |
 | | `label` | What the cell is, shown above it when the table stacks |
 | `x-wiretable.primary` | `title`, `subtitle`, `href`, `action`, `navigate` | The record, above (`navigate` adds `wire:navigate`); slots `leading` and default |
+| `x-wiretable.row` | `href`, `navigate`, `action` | The whole row opens a page or runs an Alpine expression, above |
 | `x-wiretable.empty` | `colspan` | The row shown when the list is empty |
 | `x-wiretable.menu` | `label`, `align` | The button's accessible name; `align="right"` puts the items' text on the right (left by default) |
 | `x-wiretable.menu-item` | `href`, `danger` | A link or a button; slot `leading` for an icon |

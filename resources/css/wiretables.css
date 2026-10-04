@@ -215,6 +215,16 @@
     }
 }
 
+/* A clickable row: the whole row is the target, and the keyboard reaches it. */
+.wtb-row-link {
+    cursor: pointer;
+}
+
+.wtb-row-link:focus-visible {
+    outline: 2px solid var(--wtb-accent);
+    outline-offset: -2px;
+}
+
 .wtb-empty {
     padding: var(--wtb-empty-padding);
     color: var(--wtb-muted);

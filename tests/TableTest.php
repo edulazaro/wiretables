@@ -207,4 +207,43 @@ class TableTest extends TestCase
 
         $this->assertStringContainsString('class="wtb-table wtb-stack-md wtb-compact wtb-flush"', $html);
     }
+
+    public function test_a_row_can_open_a_page_or_run_an_action_without_stealing_inner_clicks(): void
+    {
+        $link = Blade::render('<x-wiretable.row href="/clients/7" navigate wire:key="r7"><x-wiretable.td>Ana</x-wiretable.td></x-wiretable.row>');
+        $action = Blade::render('<x-wiretable.row action="$wire.edit(7)"><x-wiretable.td>Ana</x-wiretable.td></x-wiretable.row>');
+        $plain = Blade::render('<x-wiretable.row><x-wiretable.td>Ana</x-wiretable.td></x-wiretable.row>');
+
+        $this->assertStringContainsString('class="wtb-row wtb-row-link"', $link);
+        $this->assertStringContainsString('tabindex="0"', $link);
+        $this->assertStringContainsString('Livewire.navigate', $link);
+        $this->assertStringContainsString("'\\/clients\\/7'", $link);
+        $this->assertStringContainsString('wire:key="r7"', $link);
+
+        // Whatever is interactive inside the row keeps its own click: the menu, a link, a field.
+        $this->assertStringContainsString("closest('a, button, input, select, textarea, label, summary, [contenteditable], [data-wtb-ignore]')", $link);
+        $this->assertStringContainsString('window.getSelection()', $link);
+        $this->assertStringContainsString('$event.ctrlKey || $event.metaKey', $link);
+        $this->assertStringContainsString('x-on:keydown.enter.self', $link);
+
+        $this->assertStringContainsString('$wire.edit(7)', $action);
+        $this->assertStringNotContainsString('window.location', $action);
+
+        $this->assertStringContainsString('<tr class="wtb-row">', $plain);
+        $this->assertStringNotContainsString('tabindex', $plain);
+    }
+
+    public function test_a_clickable_row_keeps_its_fold_when_expandable(): void
+    {
+        $html = Blade::render(<<<'BLADE'
+            <x-wiretable stack="md" expandable>
+                <x-slot:head><x-wiretable.th>Name</x-wiretable.th></x-slot:head>
+                <x-wiretable.row href="/a"><x-wiretable.td>A</x-wiretable.td></x-wiretable.row>
+            </x-wiretable>
+            BLADE);
+
+        $this->assertStringContainsString('x-data="{ open: false }"', $html);
+        $this->assertStringContainsString("x-bind:class=\"open && 'wtb-open'\"", $html);
+        $this->assertStringContainsString('wtb-row-link', $html);
+    }
 }
