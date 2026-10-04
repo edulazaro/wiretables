@@ -331,6 +331,14 @@
     .wtb-title-button:hover {
         text-decoration-line: underline;
     }
+
+    /* A clickable row underlines its record's name too, so what the pointer is about to
+       open is the same whether the name is a link of its own or the row carries the link.
+       Without this, a row with `href` and a plain title gave only the cursor and the
+       hover ground, and wirelist's items do underline. */
+    .wtb-row-link:hover .wtb-title-text {
+        text-decoration-line: underline;
+    }
 }
 
 .wtb-subtitle {

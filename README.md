@@ -149,6 +149,8 @@ Give the row an `href` (with `navigate` for no reload) or an `action` (an Alpine
 
 Anything else that should not open the row takes `data-wtb-ignore`.
 
+The row underlines the record's name on hover, so what the pointer is about to open reads the same whether the name is a link of its own (`href` on the `primary`) or the row carries the link. Give the `primary` no `href` when the row already has one.
+
 ## Sorting
 
 Give a header a `sortable` key and the component's `sort` and `direction`, and it becomes a button that shows the order it is in:

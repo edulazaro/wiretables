@@ -233,6 +233,31 @@ class TableTest extends TestCase
         $this->assertStringNotContainsString('tabindex', $plain);
     }
 
+    public function test_a_clickable_row_underlines_the_record_name_on_hover(): void
+    {
+        // With the link on the row, the title is a plain <p>, not an <a>, so the rule that
+        // underlines `.wtb-title-link` never reached it: the row gave only the cursor and the
+        // hover ground. What the pointer is about to open should read the same either way.
+        $css = file_get_contents(__DIR__.'/../resources/css/wiretables-core.css');
+
+        $this->assertMatchesRegularExpression(
+            '/\.wtb-row-link:hover \.wtb-title-text \{[^}]*text-decoration-line:\s*underline/',
+            $css,
+        );
+
+        // And inside `@media (hover: hover)`, as the rest of the package's hover rules: on a
+        // touch screen there is no pointer to hover with, and the underline would stick.
+        preg_match_all('/@media \\(hover: hover\\) \\{(?:[^{}]|\\{[^{}]*\\})*\\}/', $css, $blocks);
+
+        $inside = false;
+
+        foreach ($blocks[0] as $block) {
+            $inside = $inside || str_contains($block, '.wtb-row-link:hover');
+        }
+
+        $this->assertTrue($inside, 'The rule must sit inside a hover media query.');
+    }
+
     public function test_a_clickable_row_keeps_its_fold_when_expandable(): void
     {
         $html = Blade::render(<<<'BLADE'
