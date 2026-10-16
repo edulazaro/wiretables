@@ -294,9 +294,14 @@
     gap: 12px;
 }
 
+/* A word with no break in it, usually an email address in the subtitle, would otherwise decide
+   how narrow the record's column can get: the table grew past its box and pushed the row menu
+   off screen (a 257 px address at 1024 px). `anywhere`, unlike `break-word`, also counts in the
+   min-content width the table sizes the column by. */
 .wtb-primary-body {
     flex: 1 1 0%;
     min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* The name is cut with an ellipsis whether it is text, a link or a button. It used to be
