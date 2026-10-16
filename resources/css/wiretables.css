@@ -171,6 +171,16 @@
     white-space: nowrap;
 }
 
+/* The record's column cuts its name the same way: the name is `nowrap` with an ellipsis, and
+   in a table's automatic layout a column is never narrower than its content's longest unbroken
+   line, so the whole name was the column's minimum and a long one pushed the table past its
+   box (the row menu off screen at 768 px, and at 390 px on a phone, in CreaCRM). With
+   `max-width: 0` it takes its share of the width, like a `truncate` cell, and the name is cut
+   there. A stacked card undoes it with the rest of the cell's limits. */
+.wtb-td:has(> .wtb-primary) {
+    max-width: 0;
+}
+
 .wtb-th.wtb-right,
 .wtb-td.wtb-right {
     text-align: right;
